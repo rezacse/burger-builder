@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Button from '../../../components/ui/Button/Button';
 import Spinner from '../../../components/ui/Spinner/Spinner';
@@ -114,7 +115,6 @@ class ContactData extends Component {
         return true;
     }
 
-
     inputChangedHandler = (event, inputIdentifier) => {
         const updatedOrderForm = {...this.state.orderForm};
         const updatedOrderElement = {...updatedOrderForm[inputIdentifier]};
@@ -137,8 +137,8 @@ class ContactData extends Component {
             customerInfo[key] = this.state.orderForm[key].value;
         }
         const order = {
-            ingredients: this.props.ingredients,
-            price: this.props.price,
+            ingredients: this.props.storeIngredients,
+            price: this.props.totalPrice,
             customer: customerInfo
         };
 
@@ -192,4 +192,11 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData;
+const mapStateToProps = (state) => {
+    return {
+        storeIngredients: state.ingredients,
+        totalPrice: state.totalPrice
+    };
+};
+
+export default connect(mapStateToProps)(ContactData);
